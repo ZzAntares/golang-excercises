@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <table summary="Performance over the days of the selected stock.">
+      <thead>
+        <tr>
+          <td>Time</td>
+          <td>Volume</td>
+          <td>Open</td>
+          <td>High</td>
+          <td>Low</td>
+          <td>Close</td>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range . }}
+        <tr>
+          <td>{{ .Date }}</td>
+          <td>{{ .Volume }}</td>
+          <td>{{ .Open }}</td>
+          <td>{{ .High }}</td>
+          <td>{{ .Low }}</td>
+          <td>{{ .Close }}</td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script>
+     Highcharts.chart('container', {
+
+       title: {
+         text: 'Growth of the S&P500 daily'
+       },
+
+       subtitle: {
+         text: 'Source: finance.yahoo.com'
+       },
+
+       yAxis: {
+         title: {
+           text: 'Data series price & volume'
+         }
+       },
+       legend: {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'middle'
+       },
+
+       plotOptions: {
+         series: {
+           pointStart: 2010
+         }
+       },
+
+       series: [{
+         name: 'Open',
+         data: [
+           {{ range . }}
+           {{ .Open }},
+           {{ end }}
+         ]
+       }, {
+         name: 'High',
+         data: [
+           {{ range . }}
+           {{ .High }},
+           {{ end }}
+         ]
+       }, {
+         name: 'Low',
+         data: [
+           {{ range . }}
+           {{ .Low }},
+           {{ end }}
+         ]
+       }, {
+         name: 'Close',
+         data: [
+           {{ range . }}
+           {{ .Close }},
+           {{ end }}
+         ]
+       }]
+
+     });
+    </script>
+  </body>
+</html>
